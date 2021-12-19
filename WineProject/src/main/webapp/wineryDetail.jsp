@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>vineyardDetail</title>
+<title>wineryDetail</title>
 </head>
 <body>
 	<%
@@ -41,14 +41,18 @@
 			productionResult = stmt.executeQuery(productionQuery);
 			inventoryResult = stmt.executeQuery(inventoryQuery);
 			%>
+		<%! int money;%>
+		<%! String vineyard_ID;%>
 		<h3>"<%=winery_ID %>" 양조장 상세정보</h3>
 		<table border=1> 
 			<tr>
 				<td>양조장ID</td><td>주인</td><td>주소</td>
-				<td>전화번호</td><td>백포도양</td><td>적포도양</td><td>잔고(리라)</td><td>등급</td>
+				<td>전화번호</td><td>백포도양</td><td>적포도양</td><td>잔고(리라)</td><td>등급</td><td>거래포도농장</td>
 			</tr>
 			<%
 			while(result.next()){
+				money = result.getInt(7);
+				vineyard_ID = result.getString(9);
 				%>
 			<tr>
 				<td><%=result.getString(1) %></td>
@@ -57,14 +61,15 @@
 				<td><%=result.getString(4) %></td>
 				<td><%=result.getInt(5) %></td>
 				<td><%=result.getInt(6) %></td>
-				<td><%=result.getInt(7) %></td>
-				<td><%=result.getString(9) %></td>
+				<td><%=money %></td>
+				<td><%=result.getString(8) %></td>
+				<td><%=vineyard_ID %></td>
 			</tr>
 			<%} %>
 		</table>
 		
 		<button onClick="location='wineryEdit.jsp?winery_ID=<%=winery_ID%>'">수정</button>
-		<button onClick="location='wineryEdit.jsp?winery_ID=<%=winery_ID%>'">포도구매</button>
+		<button onClick="location='grapeTradeNew.jsp?vineyard_ID=<%=vineyard_ID%>&winery_ID=<%=winery_ID%>&money=<%=money%>'">포도구매</button>
 		<br><br>
 		
 		양조장 "<%=winery_ID %>" 의 재고목록
@@ -99,7 +104,7 @@
 			</tr>
 			<%} %>
 		</table>
-		<button onClick="location='wineryEdit.jsp?winery_ID=<%=winery_ID%>'">생산</button>
+		<button onClick="location='wineryProductionNew.jsp?winery_ID=<%=winery_ID%>'">생산</button>
 		<!-- 만들어야함 -->
 		<br><br>
 		
