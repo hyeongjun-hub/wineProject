@@ -20,16 +20,14 @@
 			<div>
 				<span>포도거래내역</span>
 			</div>
-			<div>와인종류확인</div>
-			<div>와인등급확인</div>
+			<div>와인종류와 와인등급확인</div>
 		</div>
 		<div>
 			<button onclick="location='vineyard.jsp'">포도농장</button><br>
 			<button onclick="location='winery.jsp'">와인양조장</button><br>
-			<button>밭목록확인</button><br>
+			<button onclick="location='fieldAll.jsp'">밭목록확인</button><br>
 			<button onclick="location='grapeTrade.jsp'">포도거래내역</button><br>
-			<button>와인종류</button><br>
-			<button>와인등급</button><br>
+			<button onclick="location='wineCategory.jsp'">와인종류와 와인등급</button><br>
 		</div>
 	</div>
 </body>

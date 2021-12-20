@@ -22,7 +22,7 @@
 		ResultSet result = null;
 		ResultSet result2 = null;
 		String field_ID = request.getParameter("field_ID");
-		String query = "select * from field where field_ID=" +field_ID + ";";
+		String query = "select * from field where field_ID='" +field_ID + "';";
 		
 		try{
 			String driver = "org.mariadb.jdbc.Driver";

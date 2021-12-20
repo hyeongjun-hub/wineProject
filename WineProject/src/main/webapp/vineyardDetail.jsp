@@ -25,8 +25,8 @@
 	String vineyard_ID = request.getParameter("vineyard_ID");
 	session.setAttribute("vineyard_ID", vineyard_ID);
 
-	String vineQuery = "select * from vineyard where vineyard_ID = " + vineyard_ID + ";";
-	String fieldQuery = "select * from field where vineyard_ID = " + vineyard_ID + ";";
+	String vineQuery = "select * from vineyard where vineyard_ID = '" + vineyard_ID + "';";
+	String fieldQuery = "select * from field where vineyard_ID = '" + vineyard_ID + "';";
 
 	try {
 		String driver = "org.mariadb.jdbc.Driver";
@@ -36,6 +36,9 @@
 		result = stmt.executeQuery(vineQuery);
 		fieldResult = stmt.executeQuery(fieldQuery);
 		fieldResult2 = stmt.executeQuery(fieldQuery);
+		
+		int money = 0;
+
 	%>
 	<h3>
 		"<%=vineyard_ID%>" 포도농장 상세정보
@@ -52,6 +55,7 @@
 		</tr>
 		<%
 		while (result.next()) {
+			money = result.getInt(7);
 		%>
 		<tr>
 			<td><%=result.getString(1)%></td>
@@ -60,7 +64,7 @@
 			<td><%=result.getString(4)%></td>
 			<td><%=result.getInt(5)%></td>
 			<td><%=result.getInt(6)%></td>
-			<td><%=result.getInt(7)%></td>
+			<td><%=money%></td>
 		</tr>
 		<%
 		}
@@ -97,7 +101,7 @@
 				while (fieldResult2.next()) {
 					String field_ID = fieldResult2.getString(1);
 				%>
-				<option value=<%=field_ID%>><%=field_ID%></option>
+				<option value='<%=field_ID%>'><%=field_ID%></option>
 				<%
 				}
 				%>
@@ -106,7 +110,7 @@
 	</form>
 	<p>
 		<button
-			onClick="location='fieldInput.jsp?vineyard_ID=<%=vineyard_ID%>'">포도밭
+			onClick="location='fieldInput.jsp?vineyard_ID=<%=vineyard_ID%>&money=<%=money%>'">포도밭
 			구매</button>
 	<p>
 		<button onClick="location='vineyard.jsp'">돌아가기</button>

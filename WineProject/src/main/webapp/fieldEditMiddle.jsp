@@ -27,7 +27,7 @@
 	int area = Integer.parseInt(request.getParameter("area"));
 	String variety = request.getParameter("variety");
 	query = "update field set area=" + area + ", location='" + location + "', variety='" + variety + "'"
-			+ "where field_ID= " + field_ID + ";";
+			+ "where field_ID= '" + field_ID + "';";
 	try {
 		String driver = "org.mariadb.jdbc.Driver";
 		Class.forName(driver);

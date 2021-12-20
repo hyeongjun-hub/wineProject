@@ -27,9 +27,9 @@
 	String field_ID = request.getParameter("field_ID");
 	String vineyard_ID = (String) session.getAttribute("vineyard_ID");
 
-	String query = "select * from " + dbTable + " where field_ID = " + field_ID + ";";
-	String productionQuery = "select * from grapeproduction where field_ID= " + field_ID;
-	String sumQuery = "select sum(amount) from grapeproduction where field_ID=" + field_ID;
+	String query = "select * from " + dbTable + " where field_ID = '" + field_ID + "';";
+	String productionQuery = "select * from grapeproduction where field_ID= '" + field_ID + "';";
+	String sumQuery = "select sum(amount) from grapeproduction where field_ID='" + field_ID + "';";
 	int amountSum = 0;
 
 	try {
@@ -115,9 +115,6 @@
 	<br>
 	<button
 		onclick="location='grapeProduction.jsp?field_ID=<%=field_ID%>&possibleArea=<%=area%>&variety<%=variety%>'">생산</button>
-		<%
-	String backUrl = request.getHeader("referer");
-		%>
 	<p>
 		<button
 			onclick="location='vineyardDetail.jsp?vineyard_ID=<%=vineyard_ID%>'">돌아가기</button>

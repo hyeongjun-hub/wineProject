@@ -124,7 +124,7 @@
 			</tr>
 			<%} %>
 		</table>
-		<button onClick="location='wineryEdit.jsp?winery_ID=<%=winery_ID%>'">판매</button>
+		<button onClick="location='wineTrade.jsp?winery_ID=<%=winery_ID%>'">판매</button>
 		<!-- 만들어야함 -->
 		
 		

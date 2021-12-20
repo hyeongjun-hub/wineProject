@@ -20,42 +20,46 @@
 			
 		Connection conn = null;
 		Statement stmt = null;
-		ResultSet result = null;
 		String vineyard_ID = request.getParameter("vineyard_ID");
-			
+		int money = Integer.parseInt(request.getParameter("money"));	
 		try{
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			stmt = conn.createStatement();
-			String query = "select vineyard_ID from Vineyard";
-			String fieldQuery = "select * from Field";
+			String fieldQuery = "select * from Field where vineyard_ID is null and (area * 10) < " + money + ";";
 			ResultSet fieldResult = stmt.executeQuery(fieldQuery);
-			result = stmt.executeQuery(query);
+			ResultSet fieldResult2 = stmt.executeQuery(fieldQuery);
+			ResultSet fieldResult3 = stmt.executeQuery(fieldQuery);
 	%>
-	<h3>현재 모든 포도밭ID 내역</h3>
+	<h3>현재 구입 가능한 포도밭 내역</h3>
 	<table border="1">
 		<tr>
-			<th>포도밭_ID</th>
-			<% while(fieldResult.next()){
-		%>
+			<td>포도밭ID</td>
+			<td>위치</td>
+			<td>면적</td>
+			<td>종류</td>
+		</tr>
+			<% while(fieldResult.next()){%>
+		<tr>
 			<td><%=fieldResult.getString(1)%></td>
-
+			<td><%=fieldResult.getString(2)%></td>
+			<td><%=fieldResult.getInt(3)%></td>
+			<td><%=fieldResult.getString(4)%></td>
 			<%} %>
 		</tr>
 	</table>
 
-	<h2>포도밭 구매</h2>
+	<h3>농장 "<%=vineyard_ID %>" 소속 새로운 포도밭 구매</h3>
+	잔고 : <%=money %>
 	<form action="fieldMiddle.jsp" method="get">
 		<div>
-			포도밭 ID<input required type="text" name="field_ID" placeholder="중복되지않게 입력하세요"><br>
-			지역<input required type="text" name="location" placeholder="지역(시)를 입력하세요"><br>
-			면적<input required type="number" name="area" placeholder="면적을 입력하세요"><br>
-			종류<select required name="variety">
-				<option value="red">레드</option>
-				<option value="white">화이트</option>
-			</select><br>
+			포도밭 ID :
+			<select name="field_ID" required><%while(fieldResult2.next()){ %>
+				<option value=<%=fieldResult2.getString(1)%>><%=fieldResult2.getString(1) %></option>
+			<%} %>
+			</select>
 			<input type="text" name="vineyard_ID" hidden=true value=<%=vineyard_ID%>>
-			<br>
-			<button type="submit">전송</button>
+			<br><br>
+			<button type="submit">구매</button>
 		</div>
 	</form>
 

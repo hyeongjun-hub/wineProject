@@ -29,12 +29,13 @@
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			stmt = conn.createStatement();
 			result = stmt.executeQuery(grapeTradeQuery);
+			String backUrl = request.getHeader("referer");
 			%>
 		<h3> 포도농장과 와인양조장 사이의 연도별 거래내역</h3>
 		<table border=1> 
 			<tr>
 				<td>포도거래ID</td><td>거래년도</td><td>포도농장ID</td><td>양조장ID</td>
-				<td>포도종류</td><td>거래양</td>
+				<td>포도종류</td><td>거래량</td>
 			</tr>
 			<%
 			while(result.next()){
@@ -51,7 +52,9 @@
 		</table>
 		
 		<br><br>
+		<button onclick="location.href='<%=backUrl %>'">돌아가기</button>
 		<button onClick="location='home.jsp'">홈으로 이동</button>
+		
 		
 	<%
 		} catch(NumberFormatException e){

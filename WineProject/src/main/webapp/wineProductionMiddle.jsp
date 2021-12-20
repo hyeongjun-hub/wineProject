@@ -4,7 +4,7 @@
 <%@page import="java.sql.Connection" %>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.*" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -33,7 +33,7 @@
 
 		String insertQuery = "Insert into " + dbTable +" values('"+ WP_ID +"', '" + category_ID+ "', " +
 				year + ", " + amount + ",'" + winery_ID + "');";
-		String amountQuery = "Select amount from wineInventory where category_ID = '" + category_ID + "' and winery_ID = '" + winery_ID + "';";
+		String amountQuery = "Select count(*) from wineInventory where category_ID = '" + category_ID + "' and winery_ID = '" + winery_ID + "';";
 				
 		try{
 			String driver = "org.mariadb.jdbc.Driver";
@@ -46,7 +46,7 @@
 			String updateWineryQuery = null;
 			String updateWineInventoryQuery;
 			Random random = new Random();
-			String generatedString = random.ints(48, 123).limit(5).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+			String generatedString = random.ints(48, 123).filter(i->(i<=57 || i >= 65) && (i<=90 || i>= 97)).limit(5).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 			if(existingAmount == 0){
 				updateWineInventoryQuery = "insert into wineInventory values('" + generatedString + "', '"+ category_ID + "'," + amount + ", '" + winery_ID + "')";
 			}else{

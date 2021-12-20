@@ -8,43 +8,42 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>vineyard input completed</title>
+<title>wineryInput completed</title>
 </head>
 <body>
 	<%
 		String dbName = "WineProject";
-		String dbTable = "Vineyard";
+		String dbTable = "winery";
 		String jdbcDriver = "jdbc:mariadb://localhost:3306/" + dbName;
 		String dbUser = "root";
 		String dbPass = "1221";
-		String query = "";
 	
 		Connection conn = null;
 		Statement stmt = null;
 		
+		String winery_ID = request.getParameter("winery_ID");
 		String vineyard_ID = request.getParameter("vineyard_ID");
 		String owner = request.getParameter("owner");
 		String address = request.getParameter("address");
 		String tel_number = request.getParameter("tel_number");
-		String field_ID = request.getParameter("field_ID");
+		String grade_ID = request.getParameter("grade_ID");
+		System.out.println(vineyard_ID);
 		int money = Integer.parseInt(request.getParameter("money"));
-		query = "Insert into " + dbTable +" values('"+ vineyard_ID +"', '" + owner + "', '" +
-				address + "', '" + tel_number + "', 0, 0, 0);";
-		String fieldQuery = "Update field set vineyard_ID = '" + vineyard_ID + "' where field_ID = '" + field_ID + "';";
+		String query = "Insert into " + dbTable +" values('"+ winery_ID +"', '" + owner + "', '" +
+				address + "', '" + tel_number + "', 0, 0, " + money +", '" + grade_ID + "', '" + vineyard_ID + "');";
 		try{
 			String driver = "org.mariadb.jdbc.Driver";
 			Class.forName(driver);
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
-			stmt.executeUpdate(fieldQuery);	
 		
 	%>
 	<p>
 		
 		성공적으로 데이터베이스 <%=dbName%>, <%=dbTable%> table에 등록하였습니다.
 	
-	<button onclick="location='vineyard.jsp'">포도농장으로 돌아가기</button>
+	<button onclick="location='winery.jsp'">양조장으로 돌아가기</button>
 	<button onclick="location='home.jsp'">홈으로 돌아가기</button>
 	<%
 		} catch(NumberFormatException e){

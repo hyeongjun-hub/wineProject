@@ -41,7 +41,7 @@
 	<h3>현재 모든 포도생산ID 내역</h3>
 	<table border="1">
 		<tr>
-			<th>포도밭_ID</th>
+			<th>포도생산_ID</th>
 			<% while(productionResult.next()){
 		%>
 			<td><%=productionResult.getString(1)%></td>

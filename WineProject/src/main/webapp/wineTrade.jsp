@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>wineProduction Input Screen</title>
+<title>wineTrade Input Screen</title>
 </head>
 <body>
 	<%
@@ -21,35 +21,25 @@
 	Connection conn = null;
 	Statement stmt = null;
 	ResultSet result = null;
-	ResultSet categoryResult = null;
 	ResultSet invResult = null;
+	ResultSet categoryResult = null;
 	String winery_ID = request.getParameter("winery_ID");
-	String invQuery = "select inv_red, inv_white from winery where winery_ID ='" + winery_ID +"';";
-	String IDQuery = "select WP_ID from wineProduction;";
-	String categoryQuery = "select * from wineCategory";
+	String query = "select * from wineTrade;";
+	String invQuery = "select * from wineInventory where winery_ID= '"+ winery_ID + "';";
 	
 	try {
 		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 		stmt = conn.createStatement();
-		result = stmt.executeQuery(IDQuery);
-		categoryResult = stmt.executeQuery(categoryQuery);
+		result = stmt.executeQuery(query);
 		invResult = stmt.executeQuery(invQuery);
+		categoryResult = stmt.executeQuery(invQuery);
 	%>
 	
 	
-	
-	<h3>양주레시피</h3>
-	<div>red = red(1)</div>
-	<div>white = white(1)</div>
-	<div>blush = red(1) + white(1)</div>
-	<div>sparkling = red(2) + white(1)</div>
-	ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-	<br><br>
-	
-	<div><b>현재 모든 양주생산ID 내역</b></div>	
+	<div><b>현재 모든 양주판매ID 내역</b></div>	
 	<table border="1">
 		<tr>
-			<th>양주생산ID</th>
+			<th>양주판매ID</th>
 			<% while(result.next()){
 		%>
 			<td><%=result.getString(1)%></td>
@@ -61,29 +51,36 @@
 	
 	
 	ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-	<h1>새로운 양주 생산</h1>
-	<span>현재 양조장의 </span>
+	<h1>양주 판매</h1>
+	<span>현재 양조장 잔여 와인수량</span><br>
 	<%
 		while(invResult.next()){
-			%><span>적포도수: </span><%=invResult.getInt(1)%>
-			<span>백포도수: </span><%= invResult.getInt(2)%><% 
+			if(invResult.getString(2).equals("00010")){%>
+			<span>레드와인: </span><%=invResult.getInt(3)%> <%} %><%
+			else if(invResult.getString(2).equals("00020")){ %>
+			<span>화이트와인: </span><%=invResult.getInt(3)%> <%} %><%
+			else if(invResult.getString(2).equals("00030")){ %>
+			<span>블러쉬와인: </span><%=invResult.getInt(3)%> <%} %><%
+			else{ %>
+			<span>스파클링와인: </span><%=invResult.getInt(3)%> <%}
 		}
 	%>
 	<br><br>
-	<form action="wineProductionMiddle.jsp" method="get">
+	<form action="wineTradeMiddle.jsp" method="get">
 		<div>
-			양주생산ID<input type="text" name="WP_ID" required
+			양주판매ID<input type="text" name="WT_ID" required
 				placeholder="중복되지않게 입력하세요"><br> 
 			양주종류<select required name="category_ID">
 				<%while(categoryResult.next()){ %>
-				<option value="<%=categoryResult.getString(1)%>"><%=categoryResult.getString(2)%></option>
+				<option value="<%=categoryResult.getString(2)%>"><%=categoryResult.getString(2)%></option>
 				<%} %>
 			</select><br>
 			생산년도<input type="number" name="year" required value=2021
-				placeholder="거래년도를 입력하세요"><br> 
-			생산량<input type="number" name="amount" required
-				placeholder="생산량을 입력하세요"><br> 
+				placeholder="판매년도를 입력하세요"><br> 
+			판매량<input type="number" name="amount" required
+				placeholder="판매량을 입력하세요"><br> 
 			<input value=<%=winery_ID %> name="winery_ID" hidden=true/>
+			<br>
 			<button type="submit">완료</button>
 		</div>
 	</form>
@@ -91,8 +88,6 @@
 	String backUrl = request.getHeader("referer");
 	%>
 
-	<br>
-	<button onclick="location='grapeTrade.jsp'">이전 모든 거래 보기</button>
 	<br>
 	<button onclick="location.href='<%=backUrl%>'">돌아가기</button>
 	<button onclick="location='home.jsp'">홈으로 돌아가기</button>

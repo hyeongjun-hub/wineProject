@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>wineCategory & wineGrade</title>
+<title>wineCategory, wineGrade</title>
 </head>
 <body>
 	<%
@@ -31,7 +31,7 @@
 			conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 			stmt = conn.createStatement();
 			categoryResult = stmt.executeQuery(categoryQuery);
-			gradeResult = stmt.executeQuery(categoryQuery);
+			gradeResult = stmt.executeQuery(gradeQuery);
 			
 			%>
 			
@@ -71,13 +71,12 @@
 		<tr>
 			<td><%=gradeResult.getString(1) %></td>
 			<td><%=gradeResult.getString(2) %></td>
-			<td><%=gradeResult.getInt(3) %></td>
+			<td><%=gradeResult.getFloat(3) %></td>
 		</tr>
 		<%
 			} 
 			%>
 	</table>
-	<button onclick="location='wineryInput.jsp'">새로운 양조장 등록</button>
 	<br><br>
 	<button onClick="location='home.jsp'">홈으로 돌아가기</button>
 	<%

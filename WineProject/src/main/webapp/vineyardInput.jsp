@@ -26,7 +26,9 @@
 		conn = DriverManager.getConnection(jdbcDriver, dbUser, dbPass);
 		stmt = conn.createStatement();
 		String query = "select vineyard_ID from Vineyard";
+		String fieldQuery = "select * from Field where vineyard_ID is null";
 		result = stmt.executeQuery(query);
+		ResultSet fieldResult = stmt.executeQuery(fieldQuery);
 	%>
 	<h3>현재 모든 포도농장ID 내역</h3>	
 	<table border="1">
@@ -51,9 +53,12 @@
 				type="text" name="address" placeholder="위치 주소를 남겨주세요"><br>
 			전화번호<input type="text" name="tel_number" required
 				placeholder="'-' 생략"><br> 
-			잔고(리라)<input required
-				type="number" name="money" placeholder="초기자금을 입력하세요"><br>
-			
+			밭선택<select name=field_ID><%while(fieldResult.next()){ %>
+				<option value=<%=fieldResult.getString("field_ID") %>><%=fieldResult.getString("field_ID") %></option>
+				<%} %>
+				<option value=null>선택안함</option>
+			</select>
+			<input required hidden=true value=0 name="money" ><br><br>
 			<button type="submit">완료</button>
 		</div>
 	</form>
